@@ -15,12 +15,11 @@ object PogodaETL {
 
     import spark.implicits._
 
-    val weatherDS = spark.read.text(args(0) + "/weather.txt")
+    val weatherDS = spark.read.text(args(0) + "/weather.txt").cache()
     val weather = weatherDS
       .map(row => row
-          .getString(0)
-          .toString
-          .split(": ", 2)(1)
+        .getString(0)
+        .split(": ", 2)(1)
       )
       .distinct()
       .withColumnRenamed("value", "opis_pogody")

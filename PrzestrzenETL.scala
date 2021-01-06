@@ -1,6 +1,7 @@
 package com.example.bigdata
 
 import org.apache.spark.sql._
+import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 
 object PrzestrzenETL {
@@ -61,15 +62,15 @@ object PrzestrzenETL {
 
     val scotlandAll = scotlandMainDS.join(scotlandAuthorityDS, scotlandMainDS("local_authoirty_ons_code").equalTo(scotlandAuthorityDS("local_authority_ons_code")), "leftouter")
       .join(scotlandRegionDS, scotlandAuthorityDS("region_ons_code").equalTo(scotlandRegionDS("region_ons_code")), "leftouter")
-      .select($"region_name", $"local_authority_name", $"road_name", $"road_category", $"road_type")
+      .select($"region_name", $"local_authority_name", $"road_name")
 
     val northEnglandAll = northEnglandMainDS.join(northEnglandAuthorityDS, northEnglandMainDS("local_authoirty_ons_code").equalTo(northEnglandAuthorityDS("local_authority_ons_code")), "leftouter")
       .join(northEnglandRegionDS, northEnglandAuthorityDS("region_ons_code").equalTo(northEnglandRegionDS("region_ons_code")), "leftouter")
-      .select($"region_name", $"local_authority_name", $"road_name", $"road_category", $"road_type")
+      .select($"region_name", $"local_authority_name", $"road_name")
 
     val southEnglandAll = southEnglandMainDS.join(southEnglandAuthorityDS, southEnglandMainDS("local_authoirty_ons_code").equalTo(southEnglandAuthorityDS("local_authority_ons_code")), "leftouter")
       .join(southEnglandRegionDS, southEnglandAuthorityDS("region_ons_code").equalTo(southEnglandRegionDS("region_ons_code")), "leftouter")
-      .select($"region_name", $"local_authority_name", $"road_name", $"road_category", $"road_type")
+      .select($"region_name", $"local_authority_name", $"road_name")
 
 
     val allDataDF = scotlandAll.union(northEnglandAll).union(southEnglandAll)
@@ -77,12 +78,14 @@ object PrzestrzenETL {
       .withColumnRenamed("region_name", "nazwa_regionu")
       .withColumnRenamed("local_authority_name", "nazwa_obszaru_adm")
       .withColumnRenamed("road_name", "nazwa_drogi")
-      .withColumnRenamed("road_category", "kategoria_drogi")
-      .withColumnRenamed("road_type", "typ_drogi")
       .withColumn("id_przestrzen", monotonically_increasing_id)
-      .select("id_przestrzen", "nazwa_regionu", "nazwa_obszaru_adm", "nazwa_drogi", "kategoria_drogi", "typ_drogi")
+      .select("id_przestrzen", "nazwa_regionu", "nazwa_obszaru_adm", "nazwa_drogi")
 
-    allDataDF.write.insertInto("w_przestrzen")
+    val window = Window.orderBy($"id_przestrzen")
+
+    val finalDataDF = allDataDF.withColumn("id_przestrzen", row_number.over(window))
+
+    finalDataDF.write.insertInto("w_przestrzen")
 
     println("Załadowano dane do tabeli wymiaru 'w_przestrzen'")
   }
