@@ -42,7 +42,7 @@ object TypPojazduETL {
     val header = scotlandMainDS.first().toSeq.toList.takeRight(13)
 
     header.foreach(p => {
-      vehicles += Typ_Pojazdu(id_pojazdu,  categories(p.toString)(0), categories(p.toString)(1), if("pedal_cycles".equals(p)) false else true)
+      vehicles += Typ_Pojazdu(id_pojazdu,  p.toString, categories(p.toString).head, if("pedal_cycles".equals(p)) false else true)
       id_pojazdu += 1
     })
 
