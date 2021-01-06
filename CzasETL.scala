@@ -47,13 +47,18 @@ object CzasETL {
           calendar.setTime(row.getTimestamp(0))
 
           val month = (calendar.get(Calendar.MONTH) + 1).toLong
+          var dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) - 1).toLong
+
+          if (dayOfWeek == 0) {
+            dayOfWeek = 7
+          }
 
           Row.fromSeq(row.toSeq :+
             (index + 1) :+
             calendar.get(Calendar.YEAR).toLong :+
             month :+
             ((month - 1) / 3 + 1) :+
-            (calendar.get(Calendar.DAY_OF_WEEK) - 1).toLong
+            dayOfWeek
           )
       },
       StructType(time.schema.fields :+
