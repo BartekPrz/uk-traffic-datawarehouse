@@ -1,5 +1,6 @@
 spark.sql("DROP TABLE IF EXISTS `w_pogoda`")
 spark.sql("DROP TABLE IF EXISTS `w_przestrzen`")
+spark.sql("DROP TABLE IF EXISTS `w_kategoria_drogi`")
 spark.sql("DROP TABLE IF EXISTS `w_czas`")
 spark.sql("DROP TABLE IF EXISTS `w_typ_pojazdu`")
 spark.sql("DROP TABLE IF EXISTS `f_fakty`")
@@ -21,7 +22,17 @@ spark.sql(
       `id_przestrzen` int,
       `nazwa_regionu` string,
       `nazwa_obszaru_adm` string,
-      `nazwa_drogi` string,
+      `nazwa_drogi` string)
+    ROW FORMAT SERDE
+      'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+    STORED AS INPUTFORMAT
+      'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+    OUTPUTFORMAT
+      'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'""")
+
+spark.sql(
+  """CREATE TABLE `w_kategoria_drogi` (
+      `id_kat_drogi` int,
       `kategoria_drogi` string,
       `typ_drogi` string)
     ROW FORMAT SERDE

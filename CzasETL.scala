@@ -19,16 +19,19 @@ object CzasETL {
       .option("header", true)
       .option("inferSchema", true)
       .csv(args(0) + "/mainDataScotland.csv")
+      .cache()
 
     val northEnglandMainDS = spark.read.format("org.apache.spark.csv")
       .option("header", true)
       .option("inferSchema", true)
       .csv(args(0) + "/mainDataNorthEngland.csv")
+      .cache()
 
     val southEnglandMainDS = spark.read.format("org.apache.spark.csv")
       .option("header", true)
       .option("inferSchema", true)
       .csv(args(0) + "/mainDataSouthEngland.csv")
+      .cache()
 
     val time = scotlandMainDS
       .union(northEnglandMainDS)
@@ -38,21 +41,25 @@ object CzasETL {
 
     val timeWithIndex = spark.sqlContext.createDataFrame(
       time.rdd.zipWithIndex.map {
-        case (row, index) => {
+        case (row, index) =>
           val calendar = Calendar.getInstance
 
           calendar.setTime(row.getTimestamp(0))
 
-          val month = calendar.get(Calendar.MONTH).toLong
+          val month = (calendar.get(Calendar.MONTH) + 1).toLong
+          var dayOfWeek = (calendar.get(Calendar.DAY_OF_WEEK) - 1).toLong
+
+          if (dayOfWeek == 0) {
+            dayOfWeek = 7
+          }
 
           Row.fromSeq(row.toSeq :+
             (index + 1) :+
             calendar.get(Calendar.YEAR).toLong :+
             month :+
-            (month / 3 + 1) :+
-            calendar.get(Calendar.DAY_OF_WEEK).toLong
+            ((month - 1) / 3 + 1) :+
+            dayOfWeek
           )
-        }
       },
       StructType(time.schema.fields :+
         StructField("id_czas", LongType, false) :+
