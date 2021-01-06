@@ -22,6 +22,7 @@ spark.sql(
       `id_przestrzen` int,
       `nazwa_regionu` string,
       `nazwa_obszaru_adm` string,
+      `kod_obszaru_adm` string,
       `nazwa_drogi` string)
     ROW FORMAT SERDE
       'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
@@ -75,6 +76,7 @@ spark.sql(
   """CREATE TABLE `f_fakty` (
       `id_pogody` int,
       `id_przestrzen` int,
+      `id_kat_drogi` int,
       `id_czas` int,
       `id_typ_pojazdu` int,
       `liczba_pojazdow` int)
