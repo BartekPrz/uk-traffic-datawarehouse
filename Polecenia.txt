@@ -1,0 +1,13 @@
+spark-shell -i schematHurtowni.scala
+
+spark-submit --class com.example.bigdata.TypPojazduETL --master yarn --num-executors 5 --driver-memory 512m --executor-memory 512m --executor-cores 1 typ-pojazdu-etl.jar project
+
+spark-submit --class com.example.bigdata.PrzestrzenETL --master yarn --num-executors 5 --driver-memory 512m --executor-memory 512m --executor-cores 1 przestrzen-etl.jar project
+
+spark-submit --class com.example.bigdata.KategoriaDrogiETL --master yarn --num-executors 5 --driver-memory 512m --executor-memory 512m --executor-cores 1 kategoria-drogi-etl.jar project
+
+spark-submit --class com.example.bigdata.PogodaETL --master yarn --num-executors 5 --driver-memory 512m --executor-memory 512m --executor-cores 1 pogoda-etl.jar project
+
+spark-submit --class com.example.bigdata.CzasETL --master yarn --num-executors 5 --driver-memory 512m --executor-memory 512m --executor-cores 1 czas-etl.jar project
+
+spark-submit --class com.example.bigdata.FaktyETL --master yarn --num-executors 5 --driver-memory 512m --executor-memory 512m --executor-cores 1 fakty-etl.jar project
