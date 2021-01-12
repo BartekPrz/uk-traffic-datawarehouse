@@ -10,7 +10,7 @@ object PrzestrzenETL {
 
     val spark = SparkSession.builder()
       .appName("PrzestrzenETL")
-      .master("local")
+      //.master("local")
       .enableHiveSupport()
       .getOrCreate()
 

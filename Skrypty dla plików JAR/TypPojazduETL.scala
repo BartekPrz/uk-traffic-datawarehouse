@@ -27,7 +27,7 @@ object TypPojazduETL {
 
     val spark = SparkSession.builder()
       .appName("TypPojazduETL")
-      .master("local")
+      //.master("local")
       .enableHiveSupport()
       .getOrCreate();
 

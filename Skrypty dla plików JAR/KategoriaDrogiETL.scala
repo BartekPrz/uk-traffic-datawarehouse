@@ -10,7 +10,7 @@ object KategoriaDrogiETL {
 
     val spark = SparkSession.builder()
       .appName("KategoriaDrogiETL")
-      .master("local")
+      //.master("local")
       .enableHiveSupport()
       .getOrCreate()
 
@@ -19,19 +19,16 @@ object KategoriaDrogiETL {
       .option("header", true)
       .option("inferSchema", true)
       .csv(args(0) + "/mainDataScotland.csv")
-      .cache()
 
     val northEnglandMainDS = spark.read.format("org.apache.spark.csv")
       .option("header", true)
       .option("inferSchema", true)
       .csv(args(0) + "/mainDataNorthEngland.csv")
-      .cache()
 
     val southEnglandMainDS = spark.read.format("org.apache.spark.csv")
       .option("header", true)
       .option("inferSchema", true)
       .csv(args(0) + "/mainDataSouthEngland.csv")
-      .cache()
 
     val allDataDF = scotlandMainDS.union(northEnglandMainDS).union(southEnglandMainDS)
       .select($"road_category", $"road_type")

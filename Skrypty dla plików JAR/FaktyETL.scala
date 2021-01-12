@@ -18,7 +18,7 @@ object FaktyETL {
 
     val spark = SparkSession.builder()
       .appName("FaktyETL")
-      .master("local")
+      //.master("local")
       .enableHiveSupport()
       .getOrCreate()
     import spark.implicits._
@@ -29,17 +29,17 @@ object FaktyETL {
       .csv(args(0) + "/mainDataScotland.csv")
       .cache()
 
-        val northEnglandMainDS = spark.read.format("org.apache.spark.csv")
-          .option("header", true)
-          .option("inferSchema", true)
-          .csv(args(0) + "/mainDataNorthEngland.csv")
-          .cache()
+    val northEnglandMainDS = spark.read.format("org.apache.spark.csv")
+      .option("header", true)
+      .option("inferSchema", true)
+      .csv(args(0) + "/mainDataNorthEngland.csv")
+      .cache()
 
-        val southEnglandMainDS = spark.read.format("org.apache.spark.csv")
-          .option("header", true)
-          .option("inferSchema", true)
-          .csv(args(0) + "/mainDataSouthEngland.csv")
-          .cache()
+    val southEnglandMainDS = spark.read.format("org.apache.spark.csv")
+      .option("header", true)
+      .option("inferSchema", true)
+      .csv(args(0) + "/mainDataSouthEngland.csv")
+      .cache()
 
     val allDataDF = scotlandMainDS
             .union(northEnglandMainDS)
