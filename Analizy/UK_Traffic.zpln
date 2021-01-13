@@ -4,11 +4,18 @@
       "title": "Analiza 1 - Liczba pojazdów w danych kwartałach w poszczególnych regionach",
       "text": "val czasDF = spark.table(\"w_czas\").select(\"id_czas\", \"kwartal\")\nval przestrzenDF = spark.table(\"w_przestrzen\").select(\"id_przestrzen\", \"nazwa_regionu\")\nval faktyDF = spark.table(\"f_fakty\").select(\"id_czas\", \"id_przestrzen\", \"liczba_pojazdow\")\n\nval analysis1DF = faktyDF.join(czasDF, faktyDF(\"id_czas\") === czasDF(\"id_czas\"))\n    .join(przestrzenDF, faktyDF(\"id_przestrzen\") === przestrzenDF(\"id_przestrzen\"))\n    .groupBy(przestrzenDF(\"nazwa_regionu\"), czasDF(\"kwartal\"))\n    .agg(sum(faktyDF(\"liczba_pojazdow\")).as(\"liczba_pojazdow\"))\n    .orderBy($\"liczba_pojazdow\")\n\nz.show(analysis1DF)",
       "user": "anonymous",
-      "dateUpdated": "2021-01-12T12:08:54+0000",
+      "dateUpdated": "2021-01-13T11:11:06+0000",
       "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
         "colWidth": 12,
+        "editorMode": "ace/mode/scala",
         "fontSize": 9,
-        "enabled": true,
+        "title": true,
         "results": {
           "0": {
             "graph": {
@@ -81,14 +88,7 @@
             "helium": {}
           }
         },
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": false,
-          "completionKey": "TAB",
-          "completionSupport": true
-        },
-        "editorMode": "ace/mode/scala",
-        "title": true
+        "enabled": true
       },
       "settings": {
         "params": {},
@@ -108,44 +108,31 @@
         ]
       },
       "apps": [],
-      "runtimeInfos": {
-        "jobUrl": {
-          "propertyName": "jobUrl",
-          "label": "SPARK JOB",
-          "tooltip": "View in Spark web UI",
-          "group": "spark",
-          "values": [
-            {
-              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:44885/jobs/job?id=29",
-              "$$hashKey": "object:4804"
-            },
-            {
-              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:44885/jobs/job?id=30",
-              "$$hashKey": "object:4805"
-            }
-          ],
-          "interpreterSettingId": "spark"
-        }
-      },
+      "runtimeInfos": {},
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1610451885070_212722281",
+      "jobName": "paragraph_1610536261577_1863754816",
       "id": "paragraph_1610451885070_212722281",
-      "dateCreated": "2021-01-12T11:44:45+0000",
-      "dateStarted": "2021-01-12T12:04:57+0000",
-      "dateFinished": "2021-01-12T12:05:01+0000",
-      "status": "FINISHED",
+      "dateCreated": "2021-01-13T11:11:01+0000",
+      "status": "READY",
       "focus": true,
-      "$$hashKey": "object:4638"
+      "$$hashKey": "object:305"
     },
     {
       "title": "Analiza 2 - Liczba pojazdów niesilnikowych w miesiącach wiosennych w kolejnych latach",
-      "text": "val czasDF = spark.table(\"w_czas\").select(\"id_czas\", \"rok\", \"miesiac\")\nval typPojazduDF = spark.table(\"w_typ_pojazdu\").select(\"id_typ\", \"silnikowy\")\nval faktyDF = spark.table(\"f_fakty\").select(\"id_czas\", \"id_typ_pojazdu\", \"liczba_pojazdow\")\n\nval analysis2DF = faktyDF.join(czasDF, faktyDF(\"id_czas\") === czasDF(\"id_czas\"))\n    .join(typPojazduDF, faktyDF(\"id_typ_pojazdu\") === typPojazduDF(\"id_typ\"))\n    .where(typPojazduDF(\"silnikowy\") === true)\n    .where(czasDF(\"miesiac\").between(4, 6))\n    .groupBy(czasDF(\"rok\"), czasDF(\"miesiac\"))\n    .agg(sum(faktyDF(\"liczba_pojazdow\")).as(\"liczba_pojazdow_niesilnikowych\"))\n    .orderBy($\"rok\")\n\nz.show(analysis2DF)",
+      "text": "val czasDF = spark.table(\"w_czas\").select(\"id_czas\", \"rok\", \"miesiac\")\nval typPojazduDF = spark.table(\"w_typ_pojazdu\").select(\"id_typ\", \"silnikowy\")\nval faktyDF = spark.table(\"f_fakty\").select(\"id_czas\", \"id_typ_pojazdu\", \"liczba_pojazdow\")\n\nval analysis2DF = faktyDF.join(czasDF, faktyDF(\"id_czas\") === czasDF(\"id_czas\"))\n    .join(typPojazduDF, faktyDF(\"id_typ_pojazdu\") === typPojazduDF(\"id_typ\"))\n    .where(typPojazduDF(\"silnikowy\") === false)\n    .where(czasDF(\"miesiac\").between(4, 6))\n    .groupBy(czasDF(\"rok\"), czasDF(\"miesiac\"))\n    .agg(sum(faktyDF(\"liczba_pojazdow\")).as(\"liczba_pojazdow_niesilnikowych\"))\n    .orderBy($\"rok\")\n\nz.show(analysis2DF)",
       "user": "anonymous",
-      "dateUpdated": "2021-01-12T12:23:17+0000",
+      "dateUpdated": "2021-01-13T11:11:09+0000",
       "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
         "colWidth": 12,
+        "editorMode": "ace/mode/scala",
         "fontSize": 9,
-        "enabled": true,
+        "title": true,
         "results": {
           "0": {
             "graph": {
@@ -205,13 +192,339 @@
             "helium": {}
           }
         },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "rok\tmiesiac\tliczba_pojazdow_niesilnikowych\n2005\t6\t31639\n2005\t5\t31296\n2005\t4\t22241\n2006\t5\t27892\n2006\t6\t30688\n2006\t4\t13762\n2007\t4\t15337\n2007\t5\t29472\n2007\t6\t25427\n2009\t6\t41265\n2009\t4\t20133\n2009\t5\t23875\n2010\t4\t12488\n2010\t5\t23942\n2010\t6\t24180\n2011\t5\t21606\n2011\t6\t22279\n2011\t4\t10628\n2012\t5\t28094\n2012\t6\t14598\n2012\t4\t10979\n2013\t6\t23830\n2013\t5\t17184\n2013\t4\t20342\n2014\t6\t17994\n2014\t5\t16663\n2014\t4\t6966\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mczasDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, rok: int ... 1 more field]\n\u001b[1m\u001b[34mtypPojazduDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_typ: int, silnikowy: boolean]\n\u001b[1m\u001b[34mfaktyDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, id_typ_pojazdu: int ... 1 more field]\n\u001b[1m\u001b[34manalysis2DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [rok: int, miesiac: int ... 1 more field]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610536261579_1192234273",
+      "id": "paragraph_1610451915771_207966899",
+      "dateCreated": "2021-01-13T11:11:01+0000",
+      "status": "READY",
+      "$$hashKey": "object:306"
+    },
+    {
+      "title": "Analiza 3 - Liczba pojazdów silnikowych poruszających się danym typem drogi podczas opadów śniegów",
+      "text": "val czasDF = spark.table(\"w_czas\").select(\"id_czas\", \"rok\", \"kwartal\", \"miesiac\")\nval kategoriaDF = spark.table(\"w_kategoria_drogi\").select(\"id_kat_drogi\", \"typ_drogi\")\nval typPojazduDF = spark.table(\"w_typ_pojazdu\").select(\"id_typ\", \"silnikowy\")\nval pogodaDF = spark.table(\"w_pogoda\").select(\"id_pogody\", \"opis_pogody\")\nval faktyDF = spark.table(\"f_fakty\").select(\"id_czas\", \"id_kat_drogi\", \"id_pogody\", \"id_typ_pojazdu\", \"liczba_pojazdow\")\n\nval analysis3DF = faktyDF\n    .join(czasDF, faktyDF(\"id_czas\") === czasDF(\"id_czas\"))\n    .join(typPojazduDF, faktyDF(\"id_typ_pojazdu\") === typPojazduDF(\"id_typ\"))\n    .join(kategoriaDF, faktyDF(\"id_kat_drogi\") === kategoriaDF(\"id_kat_drogi\"))\n    .join(pogodaDF, faktyDF(\"id_pogody\") === pogodaDF(\"id_pogody\"))\n    .where(typPojazduDF(\"silnikowy\") === true)\n    .where(pogodaDF(\"opis_pogody\") === \"Snowing with high winds\" or pogodaDF(\"opis_pogody\") === \"Snowing without high winds\")\n    .groupBy(kategoriaDF(\"typ_drogi\"), pogodaDF(\"opis_pogody\"), czasDF(\"kwartal\"))\n    .agg(sum(faktyDF(\"liczba_pojazdow\")).as(\"liczba_pojazdow\"))\n    .orderBy($\"liczba_pojazdow\")\n\nz.show(analysis3DF)",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T11:11:20+0000",
+      "config": {
         "editorSetting": {
           "language": "scala",
           "editOnDblClick": false,
           "completionKey": "TAB",
           "completionSupport": true
         },
+        "colWidth": 12,
         "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 666,
+              "optionOpen": false,
+              "setting": {
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": false
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "typ_drogi",
+                  "index": 0,
+                  "aggr": "sum"
+                },
+                {
+                  "name": "opis_pogody",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "kwartal",
+                  "index": 2,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "liczba_pojazdow",
+                  "index": 3,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "typ_drogi\topis_pogody\tkwartal\tliczba_pojazdow\nMinor\tSnowing with high winds\t2\t439\nMajor\tSnowing with high winds\t3\t761\nMinor\tSnowing without high winds\t3\t901\nMinor\tSnowing with high winds\t4\t970\nMinor\tSnowing with high winds\t3\t1406\nMinor\tSnowing without high winds\t4\t3397\nMajor\tSnowing with high winds\t4\t13712\nMinor\tSnowing without high winds\t2\t13718\nMinor\tSnowing with high winds\t1\t14547\nMinor\tSnowing without high winds\t1\t26383\nMajor\tSnowing with high winds\t1\t29283\nMajor\tSnowing without high winds\t3\t29336\nMajor\tSnowing with high winds\t2\t31740\nMajor\tSnowing without high winds\t4\t49251\nMajor\tSnowing without high winds\t1\t73777\nMajor\tSnowing without high winds\t2\t83721\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mczasDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, rok: int ... 2 more fields]\n\u001b[1m\u001b[34mkategoriaDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_kat_drogi: int, typ_drogi: string]\n\u001b[1m\u001b[34mtypPojazduDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_typ: int, silnikowy: boolean]\n\u001b[1m\u001b[34mpogodaDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_pogody: int, opis_pogody: string]\n\u001b[1m\u001b[34mfaktyDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, id_kat_drogi: int ... 3 more fields]\n\u001b[1m\u001b[34manalysis3DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [typ_drogi: string, opis_pogody: string ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610536261579_135107117",
+      "id": "paragraph_1610451927905_575688383",
+      "dateCreated": "2021-01-13T11:11:01+0000",
+      "status": "READY",
+      "$$hashKey": "object:307"
+    },
+    {
+      "title": "Analiza 4 - Liczba rowerzystów poruszających się danym typem drogi w poszczególnych kwartałach",
+      "text": "val czasDF = spark.table(\"w_czas\").select(\"id_czas\", \"rok\", \"kwartal\")\nval kategoriaDF = spark.table(\"w_kategoria_drogi\").select(\"id_kat_drogi\", \"typ_drogi\")\nval typPojazduDF = spark.table(\"w_typ_pojazdu\").select(\"id_typ\", \"silnikowy\")\nval faktyDF = spark.table(\"f_fakty\").select(\"id_czas\", \"id_kat_drogi\", \"id_typ_pojazdu\", \"liczba_pojazdow\")\n\nval analysis4DF = faktyDF\n    .join(czasDF, faktyDF(\"id_czas\") === czasDF(\"id_czas\"))\n    .join(typPojazduDF, faktyDF(\"id_typ_pojazdu\") === typPojazduDF(\"id_typ\"))\n    .join(kategoriaDF, faktyDF(\"id_kat_drogi\") === kategoriaDF(\"id_kat_drogi\"))\n    .where(typPojazduDF(\"silnikowy\") === false)\n    .groupBy(kategoriaDF(\"typ_drogi\"), typPojazduDF(\"silnikowy\"), czasDF(\"kwartal\"))\n    .agg(sum(faktyDF(\"liczba_pojazdow\")).as(\"liczba_pojazdow\"))\n    .orderBy($\"liczba_pojazdow\")\n\nz.show(analysis4DF)",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T11:12:37+0000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 891.547,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "nazwa_regionu": "string",
+                      "kwartal": "string",
+                      "id_pogody": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default",
+                  "stacked": false
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "typ_drogi",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "kwartal",
+                  "index": 2,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "liczba_pojazdow",
+                  "index": 3,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "typ_drogi\tsilnikowy\tkwartal\tliczba_pojazdow\nMinor\tfalse\t1\t28145\nMajor\tfalse\t1\t58618\nMinor\tfalse\t4\t79324\nMinor\tfalse\t3\t125669\nMajor\tfalse\t4\t169685\nMajor\tfalse\t3\t223329\nMinor\tfalse\t2\t239143\nMajor\tfalse\t2\t345657\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mczasDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, rok: int ... 1 more field]\n\u001b[1m\u001b[34mkategoriaDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_kat_drogi: int, typ_drogi: string]\n\u001b[1m\u001b[34mtypPojazduDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_typ: int, silnikowy: boolean]\n\u001b[1m\u001b[34mfaktyDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, id_kat_drogi: int ... 2 more fields]\n\u001b[1m\u001b[34manalysis4DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [typ_drogi: string, silnikowy: boolean ... 2 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610536261579_1069530899",
+      "id": "paragraph_1610454002609_139408732",
+      "dateCreated": "2021-01-13T11:11:01+0000",
+      "status": "READY",
+      "$$hashKey": "object:308"
+    },
+    {
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T11:20:38+0000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "opis_pogody": "string",
+                      "srednia_liczba_pojazdow": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "opis_pogody",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "srednia_liczba_pojazdow",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "opis_pogody",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "srednia_liczba_pojazdow",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true,
         "title": true
       },
       "settings": {
@@ -227,58 +540,119 @@
           "group": "spark",
           "values": [
             {
-              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:44885/jobs/job?id=66",
-              "$$hashKey": "object:8069"
+              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:38813/jobs/job?id=7",
+              "$$hashKey": "object:3094"
             },
             {
-              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:44885/jobs/job?id=67",
-              "$$hashKey": "object:8070"
+              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:38813/jobs/job?id=8",
+              "$$hashKey": "object:3095"
             }
           ],
           "interpreterSettingId": "spark"
         }
       },
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1610451915771_207966899",
-      "id": "paragraph_1610451915771_207966899",
-      "dateCreated": "2021-01-12T11:45:15+0000",
+      "jobName": "paragraph_1610536261579_1644780632",
+      "id": "paragraph_1610491847304_1221322301",
+      "dateCreated": "2021-01-13T11:11:01+0000",
       "status": "FINISHED",
-      "$$hashKey": "object:4639",
-      "dateFinished": "2021-01-12T12:23:20+0000",
-      "dateStarted": "2021-01-12T12:23:17+0000",
+      "$$hashKey": "object:309",
+      "dateFinished": "2021-01-13T11:20:27+0000",
+      "dateStarted": "2021-01-13T11:20:24+0000",
+      "title": "Analiza 5 - Średnia liczba pojazdów w danych warunkach pogodowych",
       "results": {
         "code": "SUCCESS",
         "msg": [
           {
+            "type": "TEXT",
+            "data": "\u001b[33mwarning: \u001b[0mthere was one deprecation warning (since 2.0.0); for details, enable `:setting -deprecation' or `:replay -deprecation'\n"
+          },
+          {
             "type": "TABLE",
-            "data": "rok\tmiesiac\tliczba_pojazdow_niesilnikowych\n2005\t6\t13592178\n2005\t5\t13314433\n2005\t4\t12299185\n2006\t6\t13190098\n2006\t5\t14180248\n2006\t4\t4821217\n2007\t6\t12369344\n2007\t4\t7109592\n2007\t5\t11764214\n2009\t4\t6982526\n2009\t6\t18596790\n2009\t5\t13249720\n2010\t6\t16240793\n2010\t5\t15540559\n2010\t4\t5080842\n2011\t4\t5776443\n2011\t6\t12775140\n2011\t5\t10760439\n2012\t4\t8757133\n2012\t5\t11531044\n2012\t6\t8552190\n2013\t4\t7711945\n2013\t5\t8496173\n2013\t6\t11280313\n2014\t4\t3459875\n2014\t5\t8913156\n2014\t6\t11764593\n"
+            "data": "opis_pogody\tsrednia_liczba_pojazdow\nSnowing with high winds\t62.70445344129555\nSnowing without high winds\t78.25947603121516\nRaining with high winds\t89.54433100483611\nFine with high winds\t90.2893017558187\nFog or mist\t95.43303022855739\nOther\t95.9984419263456\nRaining without high winds\t96.96200104361077\nFine without high winds\t99.50966056357066\nUnknown\t107.12044573356617\n"
           },
           {
             "type": "TEXT",
-            "data": "\u001b[1m\u001b[34mczasDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, rok: int ... 1 more field]\n\u001b[1m\u001b[34mtypPojazduDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_typ: int, silnikowy: boolean]\n\u001b[1m\u001b[34mfaktyDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_czas: int, id_typ_pojazdu: int ... 1 more field]\n\u001b[1m\u001b[34manalysis2DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [rok: int, miesiac: int ... 1 more field]\n"
+            "data": "\u001b[1m\u001b[34mpogodaDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_pogody: int, opis_pogody: string]\n\u001b[1m\u001b[34mfaktyDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_pogody: int, liczba_pojazdow: int]\n\u001b[1m\u001b[34manalysis5DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [opis_pogody: string, srednia_liczba_pojazdow: double]\n"
           }
         ]
-      }
+      },
+      "text": "val pogodaDF = spark.table(\"w_pogoda\").select(\"id_pogody\", \"opis_pogody\")\nval faktyDF = spark.table(\"f_fakty\").select(\"id_pogody\", \"liczba_pojazdow\")\n\nval analysis5DF = faktyDF\n    .join(pogodaDF, faktyDF(\"id_pogody\") === pogodaDF(\"id_pogody\"))\n    .where(pogodaDF(\"opis_pogody\") !== \"null\")\n    .groupBy(pogodaDF(\"opis_pogody\"))\n    .agg(avg(faktyDF(\"liczba_pojazdow\")).as(\"srednia_liczba_pojazdow\"))\n    .orderBy($\"srednia_liczba_pojazdow\")\n\nz.show(analysis5DF)"
     },
     {
-      "title": "Analiza 3",
-      "text": "val czasDF = spark.table(\"w_czas\").select(\"id_czas\", \"rok\", \"miesiac\").where($\"miesiac\" === 8).show()",
       "user": "anonymous",
-      "dateUpdated": "2021-01-12T12:20:02+0000",
+      "dateUpdated": "2021-01-13T11:29:00+0000",
       "config": {
-        "colWidth": 12,
-        "fontSize": 9,
-        "enabled": true,
-        "results": {},
         "editorSetting": {
           "language": "scala",
           "editOnDblClick": false,
           "completionKey": "TAB",
           "completionSupport": true
         },
+        "colWidth": 12,
         "editorMode": "ace/mode/scala",
-        "title": true,
-        "editorHide": false
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "nazwa_drogi": "string",
+                      "nazwa_obszaru_adm": "string",
+                      "liczba_pojazdow_na_drodze": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "nazwa_obszaru_adm",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "nazwa_drogi",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "liczba_pojazdow_na_drodze",
+                  "index": 2,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true,
+        "title": true
       },
       "settings": {
         "params": {},
@@ -293,63 +667,44 @@
           "group": "spark",
           "values": [
             {
-              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:44885/jobs/job?id=43",
-              "$$hashKey": "object:7130"
+              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:38813/jobs/job?id=22",
+              "$$hashKey": "object:6351"
+            },
+            {
+              "jobUrl": "http://b-przybyl-cluster-m.europe-west3-a.c.nodal-component-291813.internal:38813/jobs/job?id=23",
+              "$$hashKey": "object:6352"
             }
           ],
           "interpreterSettingId": "spark"
         }
       },
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1610451927905_575688383",
-      "id": "paragraph_1610451927905_575688383",
-      "dateCreated": "2021-01-12T11:45:27+0000",
+      "jobName": "paragraph_1610536261580_1598107795",
+      "id": "paragraph_1610485144618_1209658653",
+      "dateCreated": "2021-01-13T11:11:01+0000",
       "status": "FINISHED",
-      "$$hashKey": "object:4640",
-      "dateFinished": "2021-01-12T12:20:03+0000",
-      "dateStarted": "2021-01-12T12:20:02+0000",
+      "$$hashKey": "object:310",
+      "dateFinished": "2021-01-13T11:28:11+0000",
+      "dateStarted": "2021-01-13T11:28:07+0000",
+      "title": "Analiza 6 - 10 najczęściej uczęszczanych dróg w zbiorze danych",
       "results": {
         "code": "SUCCESS",
         "msg": [
           {
+            "type": "TABLE",
+            "data": "nazwa_drogi\tnazwa_obszaru_adm\tliczba_pojazdow_na_drodze\nM25\tSurrey\t11348988\nA2\tKent\t9125783\nM27\tHampshire\t8261809\nA3\tSurrey\t7789736\nM3\tHampshire\t7177557\nA12\tEssex\t7125291\nM20\tKent\t6342768\nM6\tLancashire\t6227975\nM25\tHertfordshire\t6217405\nM25\tKent\t4550869\n"
+          },
+          {
             "type": "TEXT",
-            "data": "+-------+----+-------+\n|id_czas| rok|miesiac|\n+-------+----+-------+\n|    458|2004|      8|\n|   2009|2004|      8|\n|   2062|2004|      8|\n|   2390|2004|      8|\n|   2574|2004|      8|\n|   2843|2004|      8|\n|   2898|2004|      8|\n|   2913|2004|      8|\n|   3102|2004|      8|\n|   3149|2004|      8|\n|   4113|2004|      8|\n|   4114|2004|      8|\n|   4115|2004|      8|\n|  23537|2004|      8|\n|  20494|2004|      8|\n|  20975|2004|      8|\n|   9230|2004|      8|\n|   9667|2004|      8|\n|  15142|2004|      8|\n|  15398|2004|      8|\n+-------+----+-------+\nonly showing top 20 rows\n\n\u001b[1m\u001b[34mczasDF\u001b[0m: \u001b[1m\u001b[32mUnit\u001b[0m = ()\n"
+            "data": "\u001b[1m\u001b[34mfaktyDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_przestrzen: int, liczba_pojazdow: int]\n\u001b[1m\u001b[34mprzestrzenDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [id_przestrzen: int, nazwa_drogi: string ... 1 more field]\n\u001b[1m\u001b[34manalysis6DF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [nazwa_drogi: string, nazwa_obszaru_adm: string ... 1 more field]\n"
           }
         ]
-      }
-    },
-    {
-      "user": "anonymous",
-      "config": {
-        "colWidth": 12,
-        "fontSize": 9,
-        "enabled": true,
-        "results": {},
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": false,
-          "completionKey": "TAB",
-          "completionSupport": true
-        },
-        "editorMode": "ace/mode/scala"
       },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "apps": [],
-      "runtimeInfos": {},
-      "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1610454002609_139408732",
-      "id": "paragraph_1610454002609_139408732",
-      "dateCreated": "2021-01-12T12:20:02+0000",
-      "status": "READY",
-      "focus": true,
-      "$$hashKey": "object:7030"
+      "text": "val faktyDF = spark.table(\"f_fakty\").select(\"id_przestrzen\", \"liczba_pojazdow\")\nval przestrzenDF = spark.table(\"w_przestrzen\").select(\"id_przestrzen\", \"nazwa_drogi\", \"nazwa_obszaru_adm\")\n\nval analysis6DF = faktyDF\n    .join(przestrzenDF, faktyDF(\"id_przestrzen\") === przestrzenDF(\"id_przestrzen\"))\n    .groupBy(przestrzenDF(\"nazwa_drogi\"), przestrzenDF(\"nazwa_obszaru_adm\"))\n    .agg(sum(faktyDF(\"liczba_pojazdow\")).as(\"liczba_pojazdow_na_drodze\"))\n    .orderBy($\"liczba_pojazdow_na_drodze\".desc)\n    .limit(10)\n\nz.show(analysis6DF)"
     }
   ],
   "name": "UK_Traffic",
-  "id": "2FW97GQQF",
+  "id": "2FW5DBZYD",
   "defaultInterpreterGroup": "spark",
   "version": "0.9.0-preview2",
   "noteParams": {},
